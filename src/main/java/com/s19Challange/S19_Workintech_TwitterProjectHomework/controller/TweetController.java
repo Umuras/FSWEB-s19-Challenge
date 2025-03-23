@@ -1,5 +1,6 @@
 package com.s19Challange.S19_Workintech_TwitterProjectHomework.controller;
 
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.LikesTweetResponse;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.TweetResponse;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.Tweet;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.User;
@@ -19,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/tweet")
 public class TweetController {
-
+    //TODO: Tweetlerin like edilmiş listesi düzgün gelmiyor, düzeltilecek
     private TweetService tweetService;
     private UserService userService;
 
@@ -30,22 +31,30 @@ public class TweetController {
         this.userService = userService;
     }
 
-    @GetMapping("/welcome")
-    public String hi()
-    {
-        return "Merhaba benim idim: " + SecurityUtil.getCurrentUserId();
-    }
-
     @GetMapping("/user")
     public List<TweetResponse> findByUserId()
     {
         Long userId = SecurityUtil.getCurrentUserId();
         List<Tweet> tweets = tweetService.findByUserId(userId);
         List<TweetResponse> tweetResponses = new ArrayList<>();
+        List<LikesTweetResponse> likesTweetResponses = new ArrayList<>();
 
         tweets.forEach(tweet -> {
-            tweetResponses.add(new TweetResponse(tweet.getTweetText(), tweet.getUser().getFirstName(),
-                    tweet.getUser().getLastName(), tweet.getUser().getEmail(), tweet.getLikes()));
+            if(!tweet.getLikes().isEmpty())
+            {
+                tweet.getLikes().forEach(like -> {
+                    if(like.getTweet().getId() == tweet.getId())
+                    {
+                        likesTweetResponses.add(new LikesTweetResponse(like.getId(), like.getLikeCreated(), tweet.getId(),
+                                tweet.getTweetText()));
+                    }
+                });
+            }
+        });
+
+        tweets.forEach(tweet -> {
+            tweetResponses.add(new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getFirstName(),
+                    tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses));
         });
 
         return tweetResponses;
@@ -55,8 +64,19 @@ public class TweetController {
     public TweetResponse findById(@PathVariable Long id)
     {
         Tweet tweet = tweetService.findById(id);
-        TweetResponse tweetResponse = new TweetResponse(tweet.getTweetText(), tweet.getUser().getFirstName(),
-                tweet.getUser().getLastName(), tweet.getUser().getEmail(), tweet.getLikes());
+        List<LikesTweetResponse> likesTweetResponses = new ArrayList<>();
+        if(!tweet.getLikes().isEmpty())
+        {
+            tweet.getLikes().forEach(like -> {
+                        if(like.getTweet().getId() == tweet.getId()) {
+                            likesTweetResponses.add(new LikesTweetResponse(like.getId(), like.getLikeCreated(), tweet.getId(),
+                                    tweet.getTweetText()));
+                        }
+            });
+        }
+
+        TweetResponse tweetResponse = new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getFirstName(),
+                tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses);
         return tweetResponse;
     }
 
@@ -64,8 +84,20 @@ public class TweetController {
     public TweetResponse replaceOrCreate(@PathVariable Long id, @RequestBody Tweet tweet)
     {
         Tweet rcTweet = tweetService.replaceOrCreate(id,tweet);
-        TweetResponse tweetResponse = new TweetResponse(rcTweet.getTweetText(), rcTweet.getUser().getFirstName(),
-                rcTweet.getUser().getLastName(), rcTweet.getUser().getEmail(), rcTweet.getLikes());
+
+        List<LikesTweetResponse> likesTweetResponses = new ArrayList<>();
+        if(!rcTweet.getLikes().isEmpty())
+        {
+            rcTweet.getLikes().forEach(like -> {
+                        if(like.getTweet().getId() == rcTweet.getId()) {
+                            likesTweetResponses.add(new LikesTweetResponse(like.getId(), like.getLikeCreated(), rcTweet.getId(),
+                                    rcTweet.getTweetText()));
+                        }
+            });
+        }
+
+        TweetResponse tweetResponse = new TweetResponse(rcTweet.getId(), rcTweet.getTweetText(), rcTweet.getUser().getFirstName(),
+                rcTweet.getUser().getLastName(), rcTweet.getUser().getEmail(), likesTweetResponses);
         return tweetResponse;
     }
 
@@ -73,8 +105,19 @@ public class TweetController {
     public TweetResponse update(@PathVariable Long id, @RequestBody Tweet tweet)
     {
         Tweet updatedTweet = tweetService.update(id,tweet);
-        TweetResponse tweetResponse = new TweetResponse(updatedTweet.getTweetText(), updatedTweet.getUser().getFirstName(),
-                updatedTweet.getUser().getLastName(), updatedTweet.getUser().getEmail(), updatedTweet.getLikes());
+        List<LikesTweetResponse> likesTweetResponses = new ArrayList<>();
+        if(!updatedTweet.getLikes().isEmpty())
+        {
+            updatedTweet.getLikes().forEach(like -> {
+                        if(like.getTweet().getId() == updatedTweet.getId()) {
+                            likesTweetResponses.add(new LikesTweetResponse(like.getId(), like.getLikeCreated(), updatedTweet.getId(),
+                                    updatedTweet.getTweetText()));
+                        }
+            });
+        }
+
+        TweetResponse tweetResponse = new TweetResponse(updatedTweet.getId(), updatedTweet.getTweetText(), updatedTweet.getUser().getFirstName(),
+                updatedTweet.getUser().getLastName(), updatedTweet.getUser().getEmail(), likesTweetResponses);
         tweetService.save(updatedTweet);
         return tweetResponse;
     }
@@ -91,9 +134,20 @@ public class TweetController {
             throw new TweetException("User not null!!!", HttpStatus.BAD_REQUEST);
         }
 
-        TweetResponse tweetResponse = new TweetResponse(tweet.getTweetText(), tweet.getUser().getFirstName(),
-                tweet.getUser().getLastName(), tweet.getUser().getEmail(), tweet.getLikes());
-        tweetService.save(tweet);
+        Tweet savedTweet = tweetService.save(tweet);
+        List<LikesTweetResponse> likesTweetResponses = new ArrayList<>();
+        if(!savedTweet.getLikes().isEmpty())
+        {
+            savedTweet.getLikes().forEach(like -> {
+                        if(like.getTweet().getId() == savedTweet.getId()) {
+                            likesTweetResponses.add(new LikesTweetResponse(like.getId(), like.getLikeCreated(), savedTweet.getId(),
+                                    savedTweet.getTweetText()));
+                        }
+            });
+        }
+
+        TweetResponse tweetResponse = new TweetResponse(savedTweet.getId(), savedTweet.getTweetText(), savedTweet.getUser().getFirstName(),
+                savedTweet.getUser().getLastName(), savedTweet.getUser().getEmail(), likesTweetResponses);
         return tweetResponse;
     }
 

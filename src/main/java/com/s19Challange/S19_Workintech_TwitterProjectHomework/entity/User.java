@@ -115,7 +115,7 @@ public class User implements UserDetails {
     }
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "like", schema = "s19", joinColumns = @JoinColumn(name = "user_id"),
+    @JoinTable(name = "likes", schema = "s19", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "tweet_id"))
     private List<Likes> likes;
 

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -32,6 +33,15 @@ public class Tweet {
     @JoinTable(name = "likes", schema = "s19", joinColumns = @JoinColumn(name = "tweet_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<Likes> likes;
+
+    public void addLike(Likes like)
+    {
+        if(likes == null)
+        {
+            likes = new ArrayList<>();
+        }
+        likes.add(like);
+    }
 
     public Long getId() {
         return id;

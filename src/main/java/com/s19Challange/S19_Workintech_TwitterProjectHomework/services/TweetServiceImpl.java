@@ -61,8 +61,8 @@ public class TweetServiceImpl implements TweetService{
             {
                 throw new TweetException("This tweet doesn't belong to this user", HttpStatus.BAD_REQUEST);
             }
-            tweet.setId(tweetId);
-            tweet.setUser(user);
+            tweet.setId(updatedTweet.get().getId());
+            tweet.setUser(updatedTweet.get().getUser());
             return tweetRepository.save(tweet);
         }
 
@@ -97,6 +97,8 @@ public class TweetServiceImpl implements TweetService{
 
     @Override
     public Tweet save(Tweet tweet) {
+        User user = userService.findById(SecurityUtil.getCurrentUserId());
+        user.addTweet(tweet);
         return tweetRepository.save(tweet);
     }
 
