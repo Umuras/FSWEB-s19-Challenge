@@ -129,6 +129,21 @@ public class User implements UserDetails {
         this.likes.add(likes);
     }
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "retweet", schema = "s19", joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "tweet_id"))
+    private List<Retweet> retweets;
+
+    public void addRetweet(Retweet retweet)
+    {
+        if(retweets == null)
+        {
+            retweets = new ArrayList<>();
+        }
+        retweets.add(retweet);
+    }
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;

@@ -43,6 +43,20 @@ public class Tweet {
         likes.add(like);
     }
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "retweet", schema = "s19", joinColumns = @JoinColumn(name = "tweet_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<Retweet> retweets;
+
+    public void addRetweet(Retweet retweet)
+    {
+        if(retweets == null)
+        {
+            retweets = new ArrayList<>();
+        }
+        retweets.add(retweet);
+    }
+
     public Long getId() {
         return id;
     }
