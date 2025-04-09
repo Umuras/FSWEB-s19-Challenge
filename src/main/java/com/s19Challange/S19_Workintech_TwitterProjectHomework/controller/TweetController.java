@@ -31,6 +31,21 @@ public class TweetController {
         this.userService = userService;
     }
 
+    @GetMapping("/all")
+    public List<TweetResponse> findAll()
+    {
+        List<Tweet> tweets = tweetService.findAll();
+        List<TweetResponse> tweetResponses = new ArrayList<>();
+        List<LikesTweetResponse> likesTweetResponses = new ArrayList<>();
+
+        tweets.forEach(tweet -> {
+            tweetResponses.add(new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getFirstName(),
+                    tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses));
+        });
+
+        return tweetResponses;
+    }
+
     @GetMapping("/user")
     public List<TweetResponse> findByUserId()
     {

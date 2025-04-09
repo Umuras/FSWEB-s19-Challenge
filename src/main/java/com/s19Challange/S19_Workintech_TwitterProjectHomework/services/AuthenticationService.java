@@ -2,9 +2,11 @@ package com.s19Challange.S19_Workintech_TwitterProjectHomework.services;
 
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.Role;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.User;
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.exception.TweetException;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.repository.RoleRepository;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
