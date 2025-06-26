@@ -39,7 +39,7 @@ public class TweetController {
         List<LikesTweetResponse> likesTweetResponses = new ArrayList<>();
 
         tweets.forEach(tweet -> {
-            tweetResponses.add(new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getFirstName(),
+            tweetResponses.add(new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getId(), tweet.getUser().getFirstName(),
                     tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses));
         });
 
@@ -68,7 +68,7 @@ public class TweetController {
         });
 
         tweets.forEach(tweet -> {
-            tweetResponses.add(new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getFirstName(),
+            tweetResponses.add(new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getId(), tweet.getUser().getFirstName(),
                     tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses));
         });
 
@@ -90,7 +90,7 @@ public class TweetController {
             });
         }
 
-        TweetResponse tweetResponse = new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getFirstName(),
+        TweetResponse tweetResponse = new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getId(), tweet.getUser().getFirstName(),
                 tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses);
         return tweetResponse;
     }
@@ -111,7 +111,7 @@ public class TweetController {
             });
         }
 
-        TweetResponse tweetResponse = new TweetResponse(rcTweet.getId(), rcTweet.getTweetText(), rcTweet.getUser().getFirstName(),
+        TweetResponse tweetResponse = new TweetResponse(rcTweet.getId(), rcTweet.getTweetText(), rcTweet.getUser().getId(), rcTweet.getUser().getFirstName(),
                 rcTweet.getUser().getLastName(), rcTweet.getUser().getEmail(), likesTweetResponses);
         return tweetResponse;
     }
@@ -131,7 +131,7 @@ public class TweetController {
             });
         }
 
-        TweetResponse tweetResponse = new TweetResponse(updatedTweet.getId(), updatedTweet.getTweetText(), updatedTweet.getUser().getFirstName(),
+        TweetResponse tweetResponse = new TweetResponse(updatedTweet.getId(), updatedTweet.getTweetText(), updatedTweet.getUser().getId(), updatedTweet.getUser().getFirstName(),
                 updatedTweet.getUser().getLastName(), updatedTweet.getUser().getEmail(), likesTweetResponses);
         tweetService.save(updatedTweet);
         return tweetResponse;
@@ -161,7 +161,7 @@ public class TweetController {
             });
         }
 
-        TweetResponse tweetResponse = new TweetResponse(savedTweet.getId(), savedTweet.getTweetText(), savedTweet.getUser().getFirstName(),
+        TweetResponse tweetResponse = new TweetResponse(savedTweet.getId(), savedTweet.getTweetText(), savedTweet.getUser().getId(), savedTweet.getUser().getFirstName(),
                 savedTweet.getUser().getLastName(), savedTweet.getUser().getEmail(), likesTweetResponses);
         return tweetResponse;
     }

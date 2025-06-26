@@ -1,5 +1,6 @@
 package com.s19Challange.S19_Workintech_TwitterProjectHomework.services;
 
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.TweetCommentCount;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.Comment;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.Tweet;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.User;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -79,6 +81,11 @@ public class CommentServiceImpl implements CommentService{
             updatedComment.setCommentText(comment.getCommentText());
         }
         return commentRepository.save(updatedComment);
+    }
+
+    @Override
+    public List<TweetCommentCount> findCommentQuantity() {
+        return commentRepository.findCommentQuantity();
     }
 
     @Override

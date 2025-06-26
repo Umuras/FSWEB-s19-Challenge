@@ -2,11 +2,14 @@ package com.s19Challange.S19_Workintech_TwitterProjectHomework.controller;
 
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.CommentRequest;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.CommentResponse;
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.TweetCommentCount;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.Comment;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/comment")
@@ -31,6 +34,12 @@ public class CommentController {
                 comment.getTweet().getUser().getEmail(), comment.getUser().getId(),
                 comment.getUser().getFirstName() + " " + comment.getUser().getLastName(),
                 comment.getUser().getEmail());
+    }
+
+    @GetMapping("/quantity")
+    public List<TweetCommentCount> findCommentsQuantity()
+    {
+        return commentService.findCommentQuantity();
     }
 
     @PostMapping("/{tweetId}")
