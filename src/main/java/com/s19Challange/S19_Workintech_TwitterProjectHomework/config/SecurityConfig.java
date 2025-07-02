@@ -1,5 +1,9 @@
 package com.s19Challange.S19_Workintech_TwitterProjectHomework.config;
 
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.securityutil.AuthEntryPointJwt;
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.securityutil.AuthTokenFilter;
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.services.UserDetailsServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,9 +16,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
+
+    @Autowired
+    private AuthEntryPointJwt unauthorizedHandler;
+    @Bean
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder()
@@ -65,6 +77,7 @@ public class SecurityConfig {
                 //Eğer sadece session tabanlı authentication (JSESSIONID) kullanıyorsan, bunu kaldırabilirsin.
                 .httpBasic(Customizer.withDefaults())
                 //Bu yapılandırmayı tamamlar ve Spring Security’nin filtre zincirine ekler.
+                .addFilterBefore(authenticationJwtTokenFilter(),  UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 }

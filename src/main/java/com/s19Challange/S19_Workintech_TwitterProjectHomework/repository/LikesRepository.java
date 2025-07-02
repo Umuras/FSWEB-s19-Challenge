@@ -12,4 +12,7 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
 
     @Query("SELECT l FROM Likes AS l WHERE l.tweet.id = :tweetId")
     List<Likes> findByTweetId(Long tweetId);
+
+    @Query("SELECT COUNT(l.id) FROM Likes AS l WHERE l.tweet.id = :tweetId")
+    Long tweetLikesCount(Long tweetId);
 }

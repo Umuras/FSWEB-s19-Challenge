@@ -10,6 +10,6 @@ public interface CommentService {
     Comment save(Long tweetId, Comment comment);
     Comment replaceOrCreate(Long commentId, Long tweetId, Comment comment);
     Comment update(Long commentId, Comment comment);
-    List<TweetCommentCount> findCommentQuantity();
+    Long findCommentQuantity(Long tweetId);
     void delete(Long id);
 }

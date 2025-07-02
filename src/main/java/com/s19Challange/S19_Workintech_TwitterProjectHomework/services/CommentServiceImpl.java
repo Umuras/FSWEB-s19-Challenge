@@ -84,8 +84,8 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public List<TweetCommentCount> findCommentQuantity() {
-        return commentRepository.findCommentQuantity();
+    public Long findCommentQuantity(Long tweetId) {
+        return commentRepository.findCommentQuantity(tweetId);
     }
 
     @Override

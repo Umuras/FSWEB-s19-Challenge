@@ -36,10 +36,10 @@ public class CommentController {
                 comment.getUser().getEmail());
     }
 
-    @GetMapping("/quantity")
-    public List<TweetCommentCount> findCommentsQuantity()
+    @GetMapping("/quantity/{tweetId}")
+    public Long findCommentsQuantity(Long tweetId)
     {
-        return commentService.findCommentQuantity();
+        return commentService.findCommentQuantity(tweetId);
     }
 
     @PostMapping("/{tweetId}")

@@ -49,6 +49,11 @@ public class LikesServiceImpl implements LikesService{
     }
 
     @Override
+    public Long tweetLikesCount(Long tweetId) {
+        return likesRepository.tweetLikesCount(tweetId);
+    }
+
+    @Override
     public Likes save(Long tweetId, Likes like) {
 
         return likesRepository.save(like);

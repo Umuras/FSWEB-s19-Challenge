@@ -32,6 +32,12 @@ public class RetweetServiceImpl implements RetweetService{
     }
 
     @Override
+    public Long tweetRetweetCount(Long tweetId)
+    {
+        return retweetRepository.tweetRetweetCount(tweetId);
+    }
+
+    @Override
     public Retweet save(Retweet retweet) {
         return retweetRepository.save(retweet);
     }

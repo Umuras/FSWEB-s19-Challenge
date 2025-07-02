@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    @Query(value = "SELECT c.tweet_id, COUNT(c.id) AS comment_count FROM s19.comment AS c GROUP BY c.tweet_id ORDER BY c.tweet_id ASC", nativeQuery = true)
-    List<TweetCommentCount> findCommentQuantity();
+    @Query(value = "SELECT COUNT(c.id) AS comment_count FROM s19.comment AS c WHERE c.tweet_Id=:tweetId", nativeQuery = true)
+    Long findCommentQuantity(Long tweetId);
 }

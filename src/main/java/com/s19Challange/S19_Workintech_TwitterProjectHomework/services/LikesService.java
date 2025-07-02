@@ -8,6 +8,7 @@ public interface LikesService {
     Likes findById(Long id);
     List<Likes> findByUserId();
     List<Likes> findByTweetId(Long tweetId);
+    Long tweetLikesCount(Long tweetId);
     Likes save(Long tweetId, Likes like);
     void delete(Long likeId);
 }

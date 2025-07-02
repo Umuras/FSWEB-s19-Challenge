@@ -1,13 +1,13 @@
 package com.s19Challange.S19_Workintech_TwitterProjectHomework.controller;
 
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.LikesTweetResponse;
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.TweetCommentCount;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.TweetResponse;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.Tweet;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.User;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.exception.TweetException;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.securityutil.SecurityUtil;
-import com.s19Challange.S19_Workintech_TwitterProjectHomework.services.TweetService;
-import com.s19Challange.S19_Workintech_TwitterProjectHomework.services.UserService;
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -23,12 +23,20 @@ public class TweetController {
     //TODO: Tweetlerin like edilmiş listesi düzgün gelmiyor, düzeltilecek
     private TweetService tweetService;
     private UserService userService;
+    private CommentService commentService;
+    private LikesService likesService;
+    private RetweetService retweetService;
 
     @Autowired
-    public TweetController(TweetService tweetService, UserService userService)
+    public TweetController(TweetService tweetService, UserService userService,
+                           CommentService commentService, LikesService likesService,
+                            RetweetService retweetService)
     {
         this.tweetService = tweetService;
         this.userService = userService;
+        this.commentService = commentService;
+        this.likesService = likesService;
+        this.retweetService = retweetService;
     }
 
     @GetMapping("/all")
@@ -38,9 +46,13 @@ public class TweetController {
         List<TweetResponse> tweetResponses = new ArrayList<>();
         List<LikesTweetResponse> likesTweetResponses = new ArrayList<>();
 
+
+
+
         tweets.forEach(tweet -> {
             tweetResponses.add(new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getId(), tweet.getUser().getFirstName(),
-                    tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses));
+                    tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses, commentService.findCommentQuantity(tweet.getId()),
+                    likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId())));
         });
 
         return tweetResponses;
@@ -69,7 +81,9 @@ public class TweetController {
 
         tweets.forEach(tweet -> {
             tweetResponses.add(new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getId(), tweet.getUser().getFirstName(),
-                    tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses));
+                    tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses,
+                    commentService.findCommentQuantity(tweet.getId()),
+                    likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId())));
         });
 
         return tweetResponses;
@@ -91,7 +105,9 @@ public class TweetController {
         }
 
         TweetResponse tweetResponse = new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getUser().getId(), tweet.getUser().getFirstName(),
-                tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses);
+                tweet.getUser().getLastName(), tweet.getUser().getEmail(), likesTweetResponses,
+                commentService.findCommentQuantity(tweet.getId()),
+                likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId()));
         return tweetResponse;
     }
 
@@ -112,7 +128,9 @@ public class TweetController {
         }
 
         TweetResponse tweetResponse = new TweetResponse(rcTweet.getId(), rcTweet.getTweetText(), rcTweet.getUser().getId(), rcTweet.getUser().getFirstName(),
-                rcTweet.getUser().getLastName(), rcTweet.getUser().getEmail(), likesTweetResponses);
+                rcTweet.getUser().getLastName(), rcTweet.getUser().getEmail(), likesTweetResponses,
+                commentService.findCommentQuantity(tweet.getId()),
+                likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId()));
         return tweetResponse;
     }
 
@@ -132,7 +150,9 @@ public class TweetController {
         }
 
         TweetResponse tweetResponse = new TweetResponse(updatedTweet.getId(), updatedTweet.getTweetText(), updatedTweet.getUser().getId(), updatedTweet.getUser().getFirstName(),
-                updatedTweet.getUser().getLastName(), updatedTweet.getUser().getEmail(), likesTweetResponses);
+                updatedTweet.getUser().getLastName(), updatedTweet.getUser().getEmail(), likesTweetResponses,
+                commentService.findCommentQuantity(tweet.getId()),
+                likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId()));
         tweetService.save(updatedTweet);
         return tweetResponse;
     }
@@ -162,7 +182,9 @@ public class TweetController {
         }
 
         TweetResponse tweetResponse = new TweetResponse(savedTweet.getId(), savedTweet.getTweetText(), savedTweet.getUser().getId(), savedTweet.getUser().getFirstName(),
-                savedTweet.getUser().getLastName(), savedTweet.getUser().getEmail(), likesTweetResponses);
+                savedTweet.getUser().getLastName(), savedTweet.getUser().getEmail(), likesTweetResponses,
+                commentService.findCommentQuantity(tweet.getId()),
+                likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId()));
         return tweetResponse;
     }
 
