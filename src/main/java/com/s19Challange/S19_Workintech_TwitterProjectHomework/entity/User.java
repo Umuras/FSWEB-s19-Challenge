@@ -103,7 +103,7 @@ public class User implements UserDetails {
         roles.add(role);
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
     private List<Tweet> tweets;
 
     public void addTweet(Tweet tweet)
@@ -115,11 +115,12 @@ public class User implements UserDetails {
         tweets.add(tweet);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "likes", schema = "s19", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "tweet_id"))
-    private List<Likes> likes;
-
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "likes", schema = "s19", joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "tweet_id"))
+//    private List<Likes> likes;
+@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+private List<Likes> likes;
     public void addLike(Likes likes)
     {
         if(this.likes == null)

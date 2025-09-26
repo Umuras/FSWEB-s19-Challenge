@@ -1,5 +1,6 @@
 package com.s19Challange.S19_Workintech_TwitterProjectHomework.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -20,15 +21,17 @@ public class Likes {
     private Long id;
 
     @NotNull
-    @Column(name = "like_created")
-    private Boolean likeCreated;
+    @Column(name = "like_created", nullable = false)
+    private boolean likeCreated;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "tweet_id")
+    @JsonIgnore
     private Tweet tweet;
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Long getId() {
@@ -39,11 +42,11 @@ public class Likes {
         this.id = id;
     }
 
-    public Boolean getLikeCreated() {
+    public boolean getLikeCreated() {
         return likeCreated;
     }
 
-    public void setLikeCreated(Boolean likeCreated) {
+    public void setLikeCreated(boolean likeCreated) {
         this.likeCreated = likeCreated;
     }
 

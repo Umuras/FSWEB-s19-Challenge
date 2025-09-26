@@ -29,10 +29,12 @@ public class Tweet {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "likes", schema = "s19", joinColumns = @JoinColumn(name = "tweet_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<Likes> likes;
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "likes", schema = "s19", joinColumns = @JoinColumn(name = "tweet_id"),
+//            inverseJoinColumns = @JoinColumn(name = "user_id"))
+//    private List<Likes> likes;
+@OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
+private List<Likes> likes;
 
     public void addLike(Likes like)
     {
