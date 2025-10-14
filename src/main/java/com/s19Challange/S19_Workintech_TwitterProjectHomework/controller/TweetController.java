@@ -191,7 +191,6 @@ public class TweetController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id)
     {
-        Tweet tweet = tweetService.findById(id);
         tweetService.delete(id);
     }
 }

@@ -34,7 +34,7 @@ public class Tweet {
 //            inverseJoinColumns = @JoinColumn(name = "user_id"))
 //    private List<Likes> likes;
 @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
-private List<Likes> likes;
+private List<Likes> likes = new ArrayList<>();
 
     public void addLike(Likes like)
     {
@@ -45,9 +45,8 @@ private List<Likes> likes;
         likes.add(like);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "retweet", schema = "s19", joinColumns = @JoinColumn(name = "tweet_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    //orphanRemoval dediğimiz zaman bu tweeti bağlı olan retweet kayıtları da silinecek
+    @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
     private List<Retweet> retweets;
 
     public void addRetweet(Retweet retweet)

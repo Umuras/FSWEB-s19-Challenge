@@ -5,6 +5,7 @@ import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.User;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.exception.TweetException;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.repository.TweetRepository;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.securityutil.SecurityUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ public class TweetServiceImpl implements TweetService{
         throw new TweetException("This user hasn't any tweet", HttpStatus.NOT_FOUND);
     }
 
+    @Transactional
     @Override
     public Tweet findById(Long tweetId) {
         Optional<Tweet> optionalTweet = tweetRepository.findById(tweetId);
@@ -61,9 +63,14 @@ public class TweetServiceImpl implements TweetService{
             {
                 throw new TweetException("This tweet doesn't belong to this user", HttpStatus.BAD_REQUEST);
             }
-            tweet.setId(updatedTweet.get().getId());
-            tweet.setUser(updatedTweet.get().getUser());
-            return tweetRepository.save(tweet);
+            //Request olarak gelen detached entity üzerinde işlem yapınca hibernatede çakışmaya sebep oluyor,
+            //çünkü iki tweette aynı idye sahip
+//            tweet.setId(updatedTweet.get().getId());
+//            tweet.setUser(updatedTweet.get().getUser());
+            //tweetRepository.save(tweet); bu şekilde problem çıkıyor.
+            //Eğer tweet Databasede varsa, o databasedeki managed entity güncellenmeli. Yani updatedTweet
+            updatedTweet.get().setTweetText(tweet.getTweetText());
+            return tweetRepository.save(updatedTweet.get());
         }
 
         tweet.setUser(user);
@@ -98,10 +105,10 @@ public class TweetServiceImpl implements TweetService{
     @Override
     public Tweet save(Tweet tweet) {
         User user = userService.findById(SecurityUtil.getCurrentUserId());
-        user.addTweet(tweet);
         return tweetRepository.save(tweet);
     }
 
+    @Transactional
     @Override
     public void delete(Long id) {
         Tweet tweet = findById(id);

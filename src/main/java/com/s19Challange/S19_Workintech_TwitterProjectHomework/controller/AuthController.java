@@ -86,6 +86,23 @@ public class AuthController {
     PasswordEncoder encoder;
     @Autowired
     JwtUtil jwtUtils;
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> userInfo()
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+            User user = (User) authentication.getPrincipal();
+            if(user != null)
+            {
+                return ResponseEntity.ok(new UserResponse(user.getId(),user.getUsername(), user.getFirstName() + " " + user.getLastName()));
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+
     @PostMapping("/login")
     public LoginResponse authenticateUser(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(

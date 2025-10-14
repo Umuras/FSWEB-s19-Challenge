@@ -103,7 +103,9 @@ public class User implements UserDetails {
         roles.add(role);
     }
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
+    //Likes testinde fetch = FetchType.EAGER gerekiyor ama veri tabanından veri silmeye çalıştığında delete isteği ile problem
+    //çıkıyor o zaman kaldırılmalı
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<Tweet> tweets;
 
     public void addTweet(Tweet tweet)
@@ -131,9 +133,10 @@ private List<Likes> likes;
         this.likes.add(likes);
     }
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "retweet", schema = "s19", joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "tweet_id"))
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "retweet", schema = "s19", joinColumns = @JoinColumn(name = "user_id"),
+//    inverseJoinColumns = @JoinColumn(name = "tweet_id"))
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Retweet> retweets;
 
     public void addRetweet(Retweet retweet)
