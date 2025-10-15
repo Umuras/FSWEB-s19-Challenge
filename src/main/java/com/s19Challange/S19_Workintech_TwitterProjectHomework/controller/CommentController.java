@@ -37,7 +37,7 @@ public class CommentController {
     }
 
     @GetMapping("/quantity/{tweetId}")
-    public Long findCommentsQuantity(Long tweetId)
+    public Long findCommentsQuantity(@PathVariable Long tweetId)
     {
         return commentService.findCommentQuantity(tweetId);
     }

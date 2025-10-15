@@ -36,15 +36,13 @@ public class RetweetController {
                 retweet.getUser().getEmail(), retweet.getTweet().getId(), retweet.getTweet().getTweetText());
     }
 
+
     @PostMapping("/{tweetId}")
     @ResponseStatus(HttpStatus.CREATED)
     public RetweetResponse save(@PathVariable Long tweetId, @RequestBody Retweet retweet)
     {
-        User user = userService.findById(SecurityUtil.getCurrentUserId());
-        Tweet tweet = tweetService.findById(tweetId);
-        retweet.setUser(user);
-        retweet.setTweet(tweet);
-        Retweet saveRetweet = retweetService.save(retweet);
+        Retweet saveRetweet = retweetService.save(retweet, tweetId);
+
         return new RetweetResponse(saveRetweet.getId(), saveRetweet.getRetweetCreated(), saveRetweet.getUser().getId(),
                 saveRetweet.getUser().getEmail(), saveRetweet.getTweet().getId(), saveRetweet.getTweet().getTweetText());
     }

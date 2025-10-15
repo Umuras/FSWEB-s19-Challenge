@@ -77,14 +77,7 @@ public class LikesController {
     @ResponseStatus(HttpStatus.CREATED)
     public LikesResponse save(@PathVariable Long tweetId, @RequestBody Likes like)
     {
-        User user = userService.findById(SecurityUtil.getCurrentUserId());
-        Tweet tweet = tweetService.findById(tweetId);
-        like.setUser(user);
-        like.setTweet(tweet);
-
         Likes savedLike = likesService.save(tweetId,like);
-        user.addLike(savedLike);
-        tweet.addLike(savedLike);
 
         return new LikesResponse(savedLike.getId(), savedLike.getLikeCreated(), savedLike.getUser().getId(),
                 savedLike.getUser().getFirstName() + " " + savedLike.getUser().getLastName(),

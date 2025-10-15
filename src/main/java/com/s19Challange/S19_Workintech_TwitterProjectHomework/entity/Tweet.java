@@ -47,7 +47,7 @@ private List<Likes> likes = new ArrayList<>();
 
     //orphanRemoval dediğimiz zaman bu tweeti bağlı olan retweet kayıtları da silinecek
     @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
-    private List<Retweet> retweets;
+    private List<Retweet> retweets = new ArrayList<>();
 
     public void addRetweet(Retweet retweet)
     {
@@ -88,5 +88,10 @@ private List<Likes> likes = new ArrayList<>();
 
     public void setLikes(List<Likes> likes) {
         this.likes = likes;
+    }
+
+    public List<Retweet> getRetweets()
+    {
+        return retweets;
     }
 }

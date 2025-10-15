@@ -6,6 +6,7 @@ import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.User;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.exception.TweetException;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.repository.LikesRepository;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.securityutil.SecurityUtil;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -55,14 +56,26 @@ public class LikesServiceImpl implements LikesService{
 
     @Override
     public Likes save(Long tweetId, Likes like) {
+        User user = userService.findById(SecurityUtil.getCurrentUserId());
+        Tweet tweet = tweetService.findById(tweetId);
+        like.setUser(user);
+        like.setTweet(tweet);
+
+        tweet.getLikes().forEach((likeInfo) -> {
+            if(likeInfo.getUser().getId().equals(user.getId()))
+            {
+                throw new TweetException("You already liked this tweet, so you can't like this tweet", HttpStatus.BAD_REQUEST);
+            }
+        });
 
         return likesRepository.save(like);
     }
 
+    @Transactional
     @Override
     public void delete(Long likeId) {
         Likes like = findById(likeId);
-        if(like.getUser().getId() == SecurityUtil.getCurrentUserId())
+        if(like.getUser().getId().equals(SecurityUtil.getCurrentUserId()))
         {
             likesRepository.delete(like);
         }else{
