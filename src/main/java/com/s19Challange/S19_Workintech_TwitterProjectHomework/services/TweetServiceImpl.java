@@ -70,6 +70,10 @@ public class TweetServiceImpl implements TweetService{
             //tweetRepository.save(tweet); bu şekilde problem çıkıyor.
             //Eğer tweet Databasede varsa, o databasedeki managed entity güncellenmeli. Yani updatedTweet
             updatedTweet.get().setTweetText(tweet.getTweetText());
+            if (tweet.getImageUrl() != null)
+            {
+                updatedTweet.get().setImageUrl(tweet.getImageUrl());
+            }
             return tweetRepository.save(updatedTweet.get());
         }
 
@@ -89,6 +93,10 @@ public class TweetServiceImpl implements TweetService{
         if(tweet.getTweetText() != null)
         {
             updatedTweet.setTweetText(tweet.getTweetText());
+        }
+        if(tweet.getImageUrl() != null)
+        {
+            updatedTweet.setImageUrl(tweet.getImageUrl());
         }
         if(tweet.getUser() != null)
         {

@@ -97,7 +97,7 @@ public class AuthController {
             User user = (User) authentication.getPrincipal();
             if(user != null)
             {
-                return ResponseEntity.ok(new UserResponse(user.getId(),user.getUsername(), user.getFirstName() + " " + user.getLastName()));
+                return ResponseEntity.ok(new UserResponse(user.getId(),user.getTwitterUserName(), user.getFirstName() + " " + user.getLastName()));
             }
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
@@ -120,12 +120,12 @@ public class AuthController {
             user = optionalUser.get();
         }
 
-        return new LoginResponse(new UserResponse(user.getId(), user.getEmail(), user.getFirstName() + " " + user.getLastName()),token);
+        return new LoginResponse(new UserResponse(user.getId(), user.getTwitterUserName(), user.getFirstName() + " " + user.getLastName()),token);
     }
         @PostMapping("/register")
     public RegisterResponse register(@RequestBody RegistrationUser registrationUser)
     {
-        User user = authenticationService.register(registrationUser.email(), registrationUser.password(),
+        User user = authenticationService.register(registrationUser.email(), registrationUser.twitterUserName(), registrationUser.password(),
                 registrationUser.firstName(), registrationUser.lastName());
         return new RegisterResponse(user.getFirstName(), user.getEmail(), "User registration successful");
     }

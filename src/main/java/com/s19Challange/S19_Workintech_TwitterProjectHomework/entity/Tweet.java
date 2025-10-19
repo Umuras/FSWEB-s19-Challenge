@@ -24,6 +24,10 @@ public class Tweet {
     @Column(name = "tweet_text")
     private String tweetText;
 
+    @Setter
+    @Column(name = "image_url")
+    private String imageUrl;
+
 
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
@@ -94,4 +98,15 @@ private List<Likes> likes = new ArrayList<>();
     {
         return retweets;
     }
+
+    public String getImageUrl()
+    {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl)
+    {
+        this.imageUrl = imageUrl;
+    }
+
 }

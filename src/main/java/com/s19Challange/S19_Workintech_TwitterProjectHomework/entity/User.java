@@ -47,6 +47,11 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+    @NotNull
+    @NotBlank
+    @Column(name = "twitter_user_name")
+    private String twitterUserName;
+
     public Long getId()
     {
         return id;
@@ -87,6 +92,15 @@ public class User implements UserDetails {
 
     public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getTwitterUserName()
+    {
+        return twitterUserName;
+    }
+
+    public void setTwitterUserName(String twitterUserName) {
+        this.twitterUserName = twitterUserName;
     }
 
     @ManyToMany(fetch = FetchType.EAGER)

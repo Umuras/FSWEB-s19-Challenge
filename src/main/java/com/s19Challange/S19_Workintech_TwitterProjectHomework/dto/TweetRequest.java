@@ -16,4 +16,6 @@ public class TweetRequest {
     @NotNull
     @NotBlank
     private String tweetText;
+
+    private String imageUrl;
 }

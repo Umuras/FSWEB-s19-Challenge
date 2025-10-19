@@ -29,7 +29,7 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User register(String email, String password, String name, String surname)
+    public User register(String email, String twitterUserName, String password, String name, String surname)
     {
         Optional<User> optionalUser = userRepository.findByEmail(email);
         if(optionalUser.isPresent())
@@ -56,6 +56,7 @@ public class AuthenticationService {
         user.setPassword(encodedPassword);
         user.setFirstName(name);
         user.setLastName(surname);
+        user.setTwitterUserName(twitterUserName);
         user.setRoles(roles);
 
         return userRepository.save(user);
