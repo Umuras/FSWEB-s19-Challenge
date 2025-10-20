@@ -33,7 +33,7 @@ public class RetweetController {
     {
         Retweet retweet = retweetService.findById(id);
         return new RetweetResponse(retweet.getId(), retweet.getRetweetCreated(), retweet.getUser().getId(),
-                retweet.getUser().getEmail(), retweet.getTweet().getId(), retweet.getTweet().getTweetText());
+                retweet.getUser().getTwitterUserName(), retweet.getTweet().getId(), retweet.getTweet().getTweetText());
     }
 
 
@@ -44,7 +44,7 @@ public class RetweetController {
         Retweet saveRetweet = retweetService.save(retweet, tweetId);
 
         return new RetweetResponse(saveRetweet.getId(), saveRetweet.getRetweetCreated(), saveRetweet.getUser().getId(),
-                saveRetweet.getUser().getEmail(), saveRetweet.getTweet().getId(), saveRetweet.getTweet().getTweetText());
+                saveRetweet.getUser().getTwitterUserName(), saveRetweet.getTweet().getId(), saveRetweet.getTweet().getTweetText());
     }
 
     @DeleteMapping("/{id}")

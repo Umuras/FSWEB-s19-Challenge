@@ -53,9 +53,9 @@ public class CommentController {
         return new CommentResponse(comment.getId(), comment.getCommentText(), comment.getTweet().getId(),
                 comment.getTweet().getTweetText(), comment.getTweet().getUser().getId(),
                 comment.getTweet().getUser().getFirstName() + " " + comment.getTweet().getUser().getLastName(),
-                comment.getTweet().getUser().getEmail(), comment.getUser().getId(),
+                comment.getTweet().getUser().getUsername(), comment.getUser().getId(),
                 comment.getUser().getFirstName() + " " + comment.getUser().getLastName(),
-                comment.getUser().getEmail());
+                comment.getUser().getUsername());
     }
 
     @PatchMapping("/{id}")
@@ -68,9 +68,9 @@ public class CommentController {
         return new CommentResponse(uptadedComment.getId(), uptadedComment.getCommentText(), uptadedComment.getTweet().getId(),
                 uptadedComment.getTweet().getTweetText(), uptadedComment.getTweet().getUser().getId(),
                 uptadedComment.getTweet().getUser().getFirstName() + " " + uptadedComment.getTweet().getUser().getLastName(),
-                uptadedComment.getTweet().getUser().getEmail(), uptadedComment.getUser().getId(),
+                uptadedComment.getTweet().getUser().getUsername(), uptadedComment.getUser().getId(),
                 uptadedComment.getUser().getFirstName() + " " + uptadedComment.getUser().getLastName(),
-                uptadedComment.getUser().getEmail());
+                uptadedComment.getUser().getUsername());
     }
 
     @PutMapping("/{commentId}/tweet/{tweetId}")
@@ -83,9 +83,9 @@ public class CommentController {
         return new CommentResponse(uptadedComment.getId(), uptadedComment.getCommentText(), uptadedComment.getTweet().getId(),
                 uptadedComment.getTweet().getTweetText(), uptadedComment.getTweet().getUser().getId(),
                 uptadedComment.getTweet().getUser().getFirstName() + " " + uptadedComment.getTweet().getUser().getLastName(),
-                uptadedComment.getTweet().getUser().getEmail(), uptadedComment.getUser().getId(),
+                uptadedComment.getTweet().getUser().getUsername(), uptadedComment.getUser().getId(),
                 uptadedComment.getUser().getFirstName() + " " + uptadedComment.getUser().getLastName(),
-                uptadedComment.getUser().getEmail());
+                uptadedComment.getUser().getUsername());
     }
 
     @DeleteMapping("/{commentId}")

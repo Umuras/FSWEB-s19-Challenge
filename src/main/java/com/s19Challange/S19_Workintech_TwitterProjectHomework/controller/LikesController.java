@@ -39,9 +39,9 @@ public class LikesController {
         Likes like = likesService.findById(id);
         return new LikesResponse(like.getId(), like.getLikeCreated(), like.getUser().getId(),
                 like.getUser().getFirstName() + " " + like.getUser().getLastName(),
-                like.getUser().getEmail(), like.getTweet().getId(), like.getTweet().getTweetText(),
+                like.getUser().getUsername(), like.getTweet().getId(), like.getTweet().getTweetText(),
                 like.getTweet().getUser().getFirstName() + " " + like.getTweet().getUser().getLastName(),
-                like.getTweet().getUser().getEmail());
+                like.getTweet().getUser().getUsername());
     }
 
     @GetMapping("/likes/user/")
@@ -53,9 +53,9 @@ public class LikesController {
         likesList.forEach(like -> {
             likesResponses.add(new LikesResponse(like.getId(), like.getLikeCreated(), like.getUser().getId(),
                     like.getUser().getFirstName() + " " + like.getUser().getLastName(),
-                    like.getUser().getEmail(), like.getTweet().getId(), like.getTweet().getTweetText(),
+                    like.getUser().getUsername(), like.getTweet().getId(), like.getTweet().getTweetText(),
                     like.getTweet().getUser().getFirstName() + " " + like.getTweet().getUser().getLastName(),
-                    like.getTweet().getUser().getEmail()));
+                    like.getTweet().getUser().getUsername()));
         });
 
         return likesResponses;
@@ -81,9 +81,9 @@ public class LikesController {
 
         return new LikesResponse(savedLike.getId(), savedLike.getLikeCreated(), savedLike.getUser().getId(),
                 savedLike.getUser().getFirstName() + " " + savedLike.getUser().getLastName(),
-                savedLike.getUser().getEmail(), savedLike.getTweet().getId(), savedLike.getTweet().getTweetText(),
+                savedLike.getUser().getUsername(), savedLike.getTweet().getId(), savedLike.getTweet().getTweetText(),
                 savedLike.getTweet().getUser().getFirstName() + " " + savedLike.getTweet().getUser().getLastName(),
-                savedLike.getTweet().getUser().getEmail());
+                savedLike.getTweet().getUser().getUsername());
     }
 
     @PostMapping("/dislike/{likeId}")
@@ -93,8 +93,8 @@ public class LikesController {
         likesService.delete(likeId);
         return new LikesResponse(like.getId(), like.getLikeCreated(), like.getUser().getId(),
                 like.getUser().getFirstName() + " " + like.getUser().getLastName(),
-                like.getUser().getEmail(), like.getTweet().getId(), like.getTweet().getTweetText(),
+                like.getUser().getUsername(), like.getTweet().getId(), like.getTweet().getTweetText(),
                 like.getTweet().getUser().getFirstName() + " " + like.getTweet().getUser().getLastName(),
-                like.getTweet().getUser().getEmail());
+                like.getTweet().getUser().getUsername());
     }
 }

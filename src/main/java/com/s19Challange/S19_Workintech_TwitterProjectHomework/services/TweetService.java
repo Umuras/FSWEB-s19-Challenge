@@ -1,5 +1,7 @@
 package com.s19Challange.S19_Workintech_TwitterProjectHomework.services;
 
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.LikesResponse;
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.LikesTweetResponse;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.Tweet;
 
 import java.util.List;
@@ -12,4 +14,5 @@ public interface TweetService {
     Tweet update(Long tweetId, Tweet tweet);
     Tweet save(Tweet tweet);
     void delete(Long id);
+    List<LikesTweetResponse> checkTweetsLikes(Tweet tweet);
 }

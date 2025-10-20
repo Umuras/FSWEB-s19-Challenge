@@ -1,5 +1,7 @@
 package com.s19Challange.S19_Workintech_TwitterProjectHomework.services;
 
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.LikesResponse;
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.LikesTweetResponse;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.Tweet;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.User;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.exception.TweetException;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -126,5 +129,18 @@ public class TweetServiceImpl implements TweetService{
             throw new TweetException("This tweet is not yours, so you don't delete this tweet",HttpStatus.BAD_REQUEST);
         }
         tweetRepository.delete(tweet);
+    }
+
+    @Override
+    public List<LikesTweetResponse> checkTweetsLikes(Tweet tweet) {
+        List<LikesTweetResponse> likesTweetResponses = new ArrayList<>();
+
+        tweet.getLikes().forEach(likeObj -> {
+            if(tweet.getId().equals(likeObj.getTweet().getId()))
+            {
+                likesTweetResponses.add(new LikesTweetResponse(likeObj.getId(), likeObj.getLikeCreated(), tweet.getId(), tweet.getTweetText()));
+            }
+        });
+        return likesTweetResponses;
     }
 }
