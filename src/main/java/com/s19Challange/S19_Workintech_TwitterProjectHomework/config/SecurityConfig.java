@@ -69,9 +69,10 @@ public class SecurityConfig {
                     auth.anyRequest().authenticated();
                 })
                 //Spring Security’nin oturum yönetimi kurallarını belirler.
-                //SessionCreationPolicy.ALWAYS, her istek geldiğinde bir oturum oluşturulmasını zorunlu kılar.
+                //SessionCreationPolicy.STATELESS, Hiçbir şekilde session oluşturmaz veya kullanmaz.
+                //Her istek bağımsız olarak değerlendirilir (tam JWT uyumlu).
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 //HTTP Basic Authentication’ı etkinleştirir.
                 //Kullanıcı adı ve şifreyi Authorization Header üzerinden göndermeyi sağlar.
                 //Eğer sadece session tabanlı authentication (JSESSIONID) kullanıyorsan, bunu kaldırabilirsin.

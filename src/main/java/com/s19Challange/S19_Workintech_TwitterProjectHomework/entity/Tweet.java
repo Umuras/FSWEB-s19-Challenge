@@ -62,6 +62,18 @@ private List<Likes> likes = new ArrayList<>();
         retweets.add(retweet);
     }
 
+    @OneToMany(mappedBy = "tweet", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+
+    public void addComment(Comment comment)
+    {
+        if(comments == null)
+        {
+            comments = new ArrayList<>();
+        }
+        comments.add(comment);
+    }
+
     public Long getId() {
         return id;
     }
@@ -107,6 +119,11 @@ private List<Likes> likes = new ArrayList<>();
     public void setImageUrl(String imageUrl)
     {
         this.imageUrl = imageUrl;
+    }
+
+    public List<Comment> getComments()
+    {
+        return comments;
     }
 
 }

@@ -2,6 +2,8 @@ package com.s19Challange.S19_Workintech_TwitterProjectHomework.services;
 
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.LikesResponse;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.LikesTweetResponse;
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.TweetCommentResponse;
+import com.s19Challange.S19_Workintech_TwitterProjectHomework.dto.TweetRetweetResponse;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.Tweet;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.entity.User;
 import com.s19Challange.S19_Workintech_TwitterProjectHomework.exception.TweetException;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -62,7 +65,7 @@ public class TweetServiceImpl implements TweetService{
 
         if(updatedTweet.isPresent())
         {
-            if(SecurityUtil.getCurrentUserId() != updatedTweet.get().getUser().getId())
+            if(!Objects.equals(SecurityUtil.getCurrentUserId(), updatedTweet.get().getUser().getId()))
             {
                 throw new TweetException("This tweet doesn't belong to this user", HttpStatus.BAD_REQUEST);
             }
@@ -88,7 +91,7 @@ public class TweetServiceImpl implements TweetService{
     public Tweet update(Long tweetId, Tweet tweet) {
         Tweet updatedTweet = findById(tweetId);
 
-        if(SecurityUtil.getCurrentUserId() != updatedTweet.getUser().getId())
+        if(!Objects.equals(SecurityUtil.getCurrentUserId(), updatedTweet.getUser().getId()))
         {
             throw new TweetException("This tweet doesn't belong to this user", HttpStatus.BAD_REQUEST);
         }
@@ -124,7 +127,7 @@ public class TweetServiceImpl implements TweetService{
     public void delete(Long id) {
         Tweet tweet = findById(id);
         Long userId = SecurityUtil.getCurrentUserId();
-        if(userId != tweet.getUser().getId())
+        if(!Objects.equals(userId, tweet.getUser().getId()))
         {
             throw new TweetException("This tweet is not yours, so you don't delete this tweet",HttpStatus.BAD_REQUEST);
         }
@@ -138,9 +141,37 @@ public class TweetServiceImpl implements TweetService{
         tweet.getLikes().forEach(likeObj -> {
             if(tweet.getId().equals(likeObj.getTweet().getId()))
             {
-                likesTweetResponses.add(new LikesTweetResponse(likeObj.getId(), likeObj.getLikeCreated(), tweet.getId(), tweet.getTweetText()));
+                likesTweetResponses.add(new LikesTweetResponse(likeObj.getId(), likeObj.getLikeCreated(), tweet.getId(), tweet.getTweetText(), likeObj.getUser().getId(), likeObj.getUser().getTwitterUserName(), likeObj.getUser().getFirstName() + " " +
+                        likeObj.getUser().getLastName()));
             }
         });
         return likesTweetResponses;
+    }
+
+    @Override
+    public List<TweetCommentResponse> checkTweetsComments(Tweet tweet) {
+        List<TweetCommentResponse> tweetCommentResponses = new ArrayList<>();
+
+        tweet.getComments().forEach(comment -> {
+            if(tweet.getId().equals(comment.getTweet().getId()))
+            {
+                tweetCommentResponses.add(new TweetCommentResponse(comment.getId(), comment.getCommentText(), comment.getTweet().getId(), comment.getTweet().getTweetText(), comment.getUser().getId(), comment.getUser().getTwitterUserName()));
+            }
+        });
+        return tweetCommentResponses;
+    }
+
+    @Override
+    public List<TweetRetweetResponse> checkTweetsRetweets(Tweet tweet) {
+        List<TweetRetweetResponse> tweetRetweetResponses = new ArrayList<>();
+
+        tweet.getRetweets().forEach(retweet -> {
+            if(tweet.getId().equals(retweet.getTweet().getId()))
+            {
+                tweetRetweetResponses.add(new TweetRetweetResponse(retweet.getId(), retweet.getTweet().getId(), retweet.getTweet().getTweetText() ,retweet.getUser().getId(), retweet.getUser().getTwitterUserName()));
+            }
+        });
+
+        return tweetRetweetResponses;
     }
 }

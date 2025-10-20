@@ -44,14 +44,12 @@ public class TweetController {
     {
         List<Tweet> tweets = tweetService.findAll();
         List<TweetResponse> tweetResponses = new ArrayList<>();
-        List<LikesTweetResponse> likesTweetResponses = new ArrayList<>();
-
-
-
 
         tweets.forEach(tweet -> {
             tweetResponses.add(new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getImageUrl(), tweet.getUser().getId(), tweet.getUser().getFirstName(),
-                    tweet.getUser().getLastName(), tweet.getUser().getTwitterUserName(), likesTweetResponses, commentService.findCommentQuantity(tweet.getId()),
+                    tweet.getUser().getLastName(), tweet.getUser().getTwitterUserName(), tweetService.checkTweetsLikes(tweet),
+                    tweetService.checkTweetsComments(tweet), tweetService.checkTweetsRetweets(tweet),
+                    commentService.findCommentQuantity(tweet.getId()),
                     likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId())));
         });
 
@@ -69,6 +67,7 @@ public class TweetController {
         tweets.forEach(tweet -> {
             tweetResponses.add(new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getImageUrl(), tweet.getUser().getId(), tweet.getUser().getFirstName(),
                     tweet.getUser().getLastName(), tweet.getUser().getTwitterUserName(), tweetService.checkTweetsLikes(tweet),
+                    tweetService.checkTweetsComments(tweet), tweetService.checkTweetsRetweets(tweet),
                     commentService.findCommentQuantity(tweet.getId()),
                     likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId())));
         });
@@ -83,6 +82,7 @@ public class TweetController {
 
         TweetResponse tweetResponse = new TweetResponse(tweet.getId(), tweet.getTweetText(), tweet.getImageUrl(), tweet.getUser().getId(), tweet.getUser().getFirstName(),
                 tweet.getUser().getLastName(), tweet.getUser().getTwitterUserName(), tweetService.checkTweetsLikes(tweet),
+                tweetService.checkTweetsComments(tweet), tweetService.checkTweetsRetweets(tweet),
                 commentService.findCommentQuantity(tweet.getId()),
                 likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId()));
         return tweetResponse;
@@ -95,6 +95,7 @@ public class TweetController {
 
         TweetResponse tweetResponse = new TweetResponse(rcTweet.getId(), rcTweet.getTweetText(), tweet.getImageUrl(), rcTweet.getUser().getId(), rcTweet.getUser().getFirstName(),
                 rcTweet.getUser().getLastName(), rcTweet.getUser().getTwitterUserName(), tweetService.checkTweetsLikes(tweet),
+                tweetService.checkTweetsComments(tweet), tweetService.checkTweetsRetweets(tweet),
                 commentService.findCommentQuantity(tweet.getId()),
                 likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId()));
         return tweetResponse;
@@ -107,6 +108,7 @@ public class TweetController {
 
         TweetResponse tweetResponse = new TweetResponse(updatedTweet.getId(), updatedTweet.getTweetText(), tweet.getImageUrl(), updatedTweet.getUser().getId(), updatedTweet.getUser().getFirstName(),
                 updatedTweet.getUser().getLastName(), updatedTweet.getUser().getTwitterUserName(), tweetService.checkTweetsLikes(tweet),
+                tweetService.checkTweetsComments(tweet), tweetService.checkTweetsRetweets(tweet),
                 commentService.findCommentQuantity(tweet.getId()),
                 likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId()));
         tweetService.save(updatedTweet);
@@ -129,6 +131,7 @@ public class TweetController {
 
         TweetResponse tweetResponse = new TweetResponse(savedTweet.getId(), savedTweet.getTweetText(), tweet.getImageUrl(), savedTweet.getUser().getId(), savedTweet.getUser().getFirstName(),
                 savedTweet.getUser().getLastName(), savedTweet.getUser().getTwitterUserName(), tweetService.checkTweetsLikes(tweet),
+                tweetService.checkTweetsComments(tweet), tweetService.checkTweetsRetweets(tweet),
                 commentService.findCommentQuantity(tweet.getId()),
                 likesService.tweetLikesCount(tweet.getId()), retweetService.tweetRetweetCount(tweet.getId()));
         return tweetResponse;
