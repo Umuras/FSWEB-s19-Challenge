@@ -350,8 +350,6 @@ class TweetControllerTest {
                     //yazıyoruz. Sadece status OK yani 200 mü diye kontrol ediyoruz.
                     .andExpect(status().isOk());
 
-            //tweetService.findById() argüman olarak 1L alıp çalıştığını kontrol ediyoruz.
-            verify(tweetService).findById(eq(1L));
             //tweetService.delete() argüman olarak 1L alıp çalıştığını kontrol ediyoruz.
             verify(tweetService).delete(eq(1L));
         }

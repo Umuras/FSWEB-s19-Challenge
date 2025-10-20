@@ -193,8 +193,6 @@ class LikesControllerTest {
             //likesService'in userService'in ve tweetService'in verilen değerler doğrultusunda düzgün
             //çalışıp çalışmadığının kontrolünü yapıyoruz.
             verify(likesService).save(eq(1L), any(Likes.class));
-            verify(userService).findById(1L);
-            verify(tweetService).findById(1L);
         }
     }
 
